@@ -1,7 +1,7 @@
 name: Global Event Engine contract tests
 on:
   push:
-    branches: [main]
+    branches: [main, "release/**"]
   pull_request:
     branches: [main]
 jobs:
