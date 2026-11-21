@@ -18,7 +18,7 @@ test("creates a versioned event envelope with generated identity and timestamp",
 
 test("rejects invalid event types and versions", () => {
   assert.throws(() => createEventEnvelope({ type: "payment", correlationId: "x", payload: {} }), /versioned identifier/);
-  assert.throws(() => createEventEnvelope({ type: "payment.v1", version: 0, correlationId: "x", payload: {} }), /positive integer/);
+  assert.throws(() => createEventEnvelope({ type: "payment.confirmed.v1", version: 0, correlationId: "x", payload: {} }), /positive integer/);
 });
 
 test("rejects invalid and oversized payloads", () => {
