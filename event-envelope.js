@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 
 const MAX_PAYLOAD_BYTES = 16 * 1024;
-const EVENT_TYPE = /^[a-z][a-z0-9]*(?:\.[a-z0-9]+)+\.v[1-9][0-9]*$/;
+const EVENT_TYPE = /^[a-z][a-z0-9]*(?:\.[a-z0-9]+)+\.v([1-9][0-9]*)$/;
 
 export function createEventEnvelope({ type, version = 1, correlationId, payload } = {}) {
   if (typeof type !== "string") {
