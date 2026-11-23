@@ -21,6 +21,17 @@ test("rejects invalid event types and versions", () => {
   assert.throws(() => createEventEnvelope({ type: "payment.confirmed.v1", version: 0, correlationId: "x", payload: {} }), /positive integer/);
 });
 
+test("event type suffix must match the numeric version field", () => {
+  assert.throws(() => createEventEnvelope({ type: "billing.payment.confirmed.v2", version: 1, correlationId: "x", payload: {} }), /suffix and version field must match/);
+});
+
+test("payloads must be plain objects and are deeply immutable", () => {
+  assert.throws(() => createEventEnvelope({ type: "test.event.v1", correlationId: "x", payload: new Date() }), /plain object/);
+  const event = createEventEnvelope({ type: "test.event.v1", correlationId: "x", payload: { nested: { ok: true } } });
+  assert.equal(Object.isFrozen(event.payload), true);
+  assert.equal(Object.isFrozen(event.payload.nested), true);
+});
+
 test("rejects invalid and oversized payloads", () => {
   assert.throws(() => createEventEnvelope({ type: "test.event.v1", correlationId: "x", payload: [] }), /plain object/);
   assert.throws(() => createEventEnvelope({ type: "test.event.v1", correlationId: "x", payload: { data: "x".repeat(17000) } }), /16 KB/);
