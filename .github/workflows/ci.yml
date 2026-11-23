@@ -1,9 +1,21 @@
-name: Global Event Engine contract tests
+name: Global Event Engine checks
+
 on:
   push:
-    branches: [main, "release/**"]
+    branches:
+      - main
+      - "feat/**"
   pull_request:
-    branches: [main]
+    branches:
+      - "**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: event-engine-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -12,4 +24,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - run: node --check event-envelope.js
       - run: npm test
